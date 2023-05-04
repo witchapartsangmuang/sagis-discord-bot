@@ -1,8 +1,8 @@
 const { Client, ChannelType, GatewayIntentBits, IntentsBitField } = require('discord.js')
 
 let voiceRoomState = []
-const voiceStateUpdate = async (oldState, newState) => {
 
+const voiceStateUpdate = async (oldState, newState) => {
 
     if (newState.channelId === '1089992710062088252') {
         const newChannel = await newState.guild.channels.create({
@@ -33,7 +33,7 @@ const voiceStateUpdate = async (oldState, newState) => {
             }
         })
         voiceRoomState = newVoiceRoomState
-        console.log(voiceRoomState, 'voiceRoomState newState')
+        // console.log(voiceRoomState, 'voiceRoomState newState')
     }
     
     if (oldState.channelId !== '1089992710062088252') {
@@ -52,7 +52,7 @@ const voiceStateUpdate = async (oldState, newState) => {
             }
         })
         voiceRoomState = newVoiceRoomState
-        console.log(voiceRoomState, 'voiceRoomState oldState')
+        // console.log(voiceRoomState, 'voiceRoomState oldState')
         const checkRoomState = voiceRoomState.filter((room)=> room.roomId === oldState.channelId)[0]
         if (checkRoomState !== undefined && checkRoomState.countUser === 0) {
             oldState.guild.channels.delete(checkRoomState.roomId)

@@ -1,7 +1,6 @@
 const rollButtonInteraction = async (interaction) => {
     if (interaction.customId === 'roll_1_10') {
         const result = Math.floor(Math.random() * (10 - 1 + 1)) + 1
-        console.log(interaction.user.username, 'interaction')
         await interaction.reply(`${interaction.user.username} roll ${result.toString()} point(s)`).then((msg) => {
             setTimeout(() => msg.delete(), 10000)
         })
