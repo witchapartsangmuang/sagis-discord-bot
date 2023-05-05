@@ -10,7 +10,7 @@ const play_music_command = async (client, message) => {
                 message: message
             })
             await message.reply(`\u23F6 | Song added to queue!`).then((msg) => {
-                setTimeout(() => msg.delete(), 500)
+                setTimeout(() => msg.delete(), 1000)
             })
             message.delete()
         } else {
@@ -20,7 +20,7 @@ const play_music_command = async (client, message) => {
         }
     } catch {
         message.reply('X | No song to play!').then((msg) => {
-            setTimeout(() => msg.delete(), 500)
+            setTimeout(() => msg.delete(), 1000)
         })
     }
 
@@ -48,7 +48,7 @@ const skip_music_command = async (client, message) => {
         const queue = await client.distube.getQueue(message).skip()
     } catch {
         message.reply('There is no up next song!').then((msg) => {
-            setTimeout(() => msg.delete(), 500)
+            setTimeout(() => msg.delete(), 1000)
         })
     }
 }
@@ -58,7 +58,7 @@ const stop_music_command = async (client, message) => {
         const queue = await client.distube.getQueue(message).stop()
     } catch {
         message.reply('Stopped!').then((msg) => {
-            setTimeout(() => msg.delete(), 500)
+            setTimeout(() => msg.delete(), 1000)
         })
     }
 }
