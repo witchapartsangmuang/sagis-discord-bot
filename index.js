@@ -1,10 +1,6 @@
 const { Client, ChannelType, GatewayIntentBits, IntentsBitField, REST, Routes } = require('discord.js')
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js')
-
 const { DisTube } = require('distube')
-// const { SpotifyPlugin } = require('@distube/spotify')
-// const { SoundCloudPlugin } = require('@distube/soundcloud')
-// const { YtDlpPlugin } = require('@distube/yt-dlp')
 
 const { guildMemberAdd } = require('./events/guildMemberAdd.js')
 const { play_music_command, pause_resume_music_command, skip_music_command, stop_music_command, queue_music_command } = require('./events/musicCommand.js')
@@ -16,19 +12,6 @@ const { voiceStateUpdate } = require('./events/voiceStateUpdate.js')
 const dotenv = require('dotenv')
 dotenv.config()
 // END env setting
-
-// START global variable
-let songList = []
-let pause_resume_status = "pause"
-let emoji = {
-    "play": "▶️",
-    "stop": "⏹️",
-    "queue": "📄",
-    "success": "☑️",
-    "repeat": "🔁",
-    "error": "❌"
-}
-// END global variable
 
 // START Gateway setting
 const client = new Client({
@@ -47,15 +30,7 @@ client.distube = new DisTube(client, {
     emitNewSongOnly: true,
     emitAddSongWhenCreatingQueue: false,
     emitAddListWhenCreatingQueue: false,
-    plugins: [
-        //   new SpotifyPlugin({
-        //     emitEventsAfterFetching: true
-        //   }),
-        //   new SoundCloudPlugin(),
-        //   new YtDlpPlugin()
-    ]
 })
-client.emotes = emoji
 // END music bot setting
 // START setup commands and ready events 
 // const commands = [
@@ -106,7 +81,7 @@ client.on('ready', async (client) => {
     // END roll button
     // START report button
     // client.channels.fetch('1102527207118753885').then((channel) => {
-    //     const exampleEmbed = new EmbedBuilder()
+    //     const Embed = new EmbedBuilder()
     //         .setColor(0x09ff00)
     //         .setTitle('Report แบบส่วนตัว')
     //         .setDescription('กดปุ่มสีเขียวแล้วจะสร้างห้องสำหรับรีพอตโดยจะเห็นแค่ตัวคุณและเหล่า Staff โดยคุณ\nจะต้องเล่าเหตุการณ์ที่เกิดขึ้นตามความเป็นจริงและมีหลักฐานประกอบด้วยจะยิ่งดี')
@@ -116,7 +91,7 @@ client.on('ready', async (client) => {
     //     channel.send(
     //         {
     //             content: `ระบบ Report แบบ เปิด Ticket`,
-    //             embeds: [exampleEmbed],
+    //             embeds: [Embed],
     //             components: [report_row],
     //         }
     //     )
@@ -126,14 +101,6 @@ client.on('ready', async (client) => {
 })
 // END setup commands and events
 
-// START messageCreate events
-// client.on('messageCreate', async (message) => {
-//     if (message.content.startsWith('!roll')) {
-//         rollMessageCreate(message)
-//     }
-// })
-// END messageCreate events
-
 // START guildMemberAdd events
 client.on('guildMemberAdd', (member) => {
     guildMemberAdd(member)
@@ -142,75 +109,59 @@ client.on('guildMemberAdd', (member) => {
 
 
 client.on('messageCreate', async (message) => {
+    // START roll messageCreate
+    if (message.content.startsWith('roll')) {
+        rollMessageCreate(message)
+    }
+    // END roll messageCreate
+    // START music bot messageCreate
     if (message.content.startsWith('play')) {
-        await play_music_command(client, message, songList.length)
-        // const sonObj = await play_music_command(client, message, songList.length)
-        // songList.push(sonObj)
-        // console.log(songList, 'play')
+        play_music_command(client, message)
     }
-    if (message.content.startsWith('pause') || message.content.startsWith('resume')) {
-        pause_resume_music_command(client, message)
+    if (message.content.startsWith('Pause/Resume') || message.content.startsWith('pause') || message.content.startsWith('resume')) {
+        const pause_resume_status = await pause_resume_music_command(client, message)
+        message.reply(pause_resume_status).then((msg) => {
+            setTimeout(() => msg.delete(), 3000)
+        })
     }
-    if (message.content.startsWith('skip')) {
-        skip_music_command(client, message, songList.length)
-        // songList.shift()
-        // console.log(songList, 'skip')
+    if (message.content.startsWith('skip') || message.content.startsWith('\u23ED')) {
+        skip_music_command(client, message)
     }
-    if (message.content.startsWith('queue')) {
-        queue_music_command(client, message)
-    }
-    if (message.content.startsWith('stop')) {
+    if (message.content.startsWith('stop') || message.content.startsWith('\u23F9')) {
         stop_music_command(client, message)
     }
+    // if (message.content.startsWith('queue')) {
+    //     queue_music_command(client, message)
+    // }
+    // END music bot messageCreate
 })
-
-
-
-// client.on('messageCreate', async (message) => {
-//     console.log(message.content)
-//     if (message.content.startsWith('!reply')) {
-//         setTimeout(() => message.delete(message.id), 2000)
-//         message.reply('@everyone').then((msg) => {
-//             setTimeout(() => msg.delete(), 2000)
-//         })
-//     }
-// })
-
-
-
 
 client.on('interactionCreate', async (interaction) => {
     if (interaction.isButton) {
-        console.log(interaction.customId)
+        // START roll button actions
         if (interaction.customId === 'roll_1_10' || interaction.customId === 'roll_1_100' || interaction.customId === 'roll_1_1000') {
             rollButtonInteraction(interaction)
         }
+        // END roll button actions
         if (interaction.customId === 'reportButton') {
             reportButtonInteraction(interaction)
         }
-
+        // START music bot button actions
         if (interaction.customId === 'Pause_Resume_Button') {
-            if (pause_resume_status == "pause") {
-                // interaction.reply(pause_resume_status).then((msg) => {
-                //     setTimeout(() => msg.delete(), 100)
-                // })
-                pause_resume_status = "resume"
-            } else {
-                // interaction.reply(pause_resume_status).then((msg) => {
-                //     setTimeout(() => msg.delete(), 100)
-                // })
-                pause_resume_status = "pause"
-            }
-
-        }
-        if (interaction.customId === 'Stop_Button') {
-            // pause_resume_status = "pause"
-            interaction.reply("stop")
+            interaction.reply(`Pause/Resume`).then((msg) => {
+                setTimeout(() => msg.delete(), 1)
+            })
         }
         if (interaction.customId === 'Skip_Button') {
-            // pause_resume_status = "pause"
-            interaction.reply("skip")
+            interaction.reply(`\u23ED | Skipped!`).then((msg) => {
+                setTimeout(() => msg.delete(), 3000)
+            })
+        } if (interaction.customId === 'Stop_Button') {
+            interaction.reply(`\u23F9 | Stopped!`).then((msg) => {
+                setTimeout(() => msg.delete(), 3000)
+            })
         }
+        // END music bot button actions
 
     }
     if (!interaction.isChatInputCommand()) return
@@ -220,42 +171,22 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
     voiceRoomState = voiceStateUpdate(oldState, newState)
 })
 
-
-client.distube.on("playSong", (queue, song) => {
-    const exampleEmbed = new EmbedBuilder()
+client.distube.on('playSong', (queue, song) => {
+    const Embed = new EmbedBuilder()
         .setColor(0x09ff00)
         .setTitle('!!รายการเล่นเพลง!!')
-        .setDescription(`playSong ${client.emotes.play} | Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}`)
+        .setDescription(` \u23F5 | Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user} `)
     const playPauseButton = new ButtonBuilder().setCustomId('Pause_Resume_Button').setLabel('Play/Pause').setStyle(ButtonStyle.Success)
-    const stopButton = new ButtonBuilder().setCustomId('Stop_Button').setLabel('Stop').setStyle(ButtonStyle.Danger)
     const skipButton = new ButtonBuilder().setCustomId('Skip_Button').setLabel('Skip').setStyle(ButtonStyle.Primary)
-    const music_row = new ActionRowBuilder().addComponents(playPauseButton, stopButton, skipButton)
+    const stopButton = new ButtonBuilder().setCustomId('Stop_Button').setLabel('Stop').setStyle(ButtonStyle.Danger)
+    const music_row = new ActionRowBuilder().addComponents(playPauseButton, skipButton, stopButton)
     queue.textChannel.send(
         {
-            embeds: [exampleEmbed],
+            embeds: [Embed],
             components: [music_row],
         }
     )
 }
 )
-
-// client.distube.on("finishSong", (queue, song) => {
-    // songList.shift()
-    // const exampleEmbed = new EmbedBuilder()
-    //     .setColor(0x09ff00)
-    //     .setTitle('!!รายการเล่นเพลง!!')
-    //     .setDescription(`finishSong ${client.emotes.play} | Playing \`${songList[0].name}\` - \`${songList[0].formattedDuration}\`\nRequested by: ${songList[0].Requester}`)
-    // const playPauseButton = new ButtonBuilder().setCustomId('Pause_Resume_Button').setLabel('Play/Pause').setStyle(ButtonStyle.Success)
-    // const stopButton = new ButtonBuilder().setCustomId('Stop_Button').setLabel('Stop').setStyle(ButtonStyle.Danger)
-    // const skipButton = new ButtonBuilder().setCustomId('Skip_Button').setLabel('Skip').setStyle(ButtonStyle.Primary)
-    // const music_row = new ActionRowBuilder().addComponents(playPauseButton, stopButton, skipButton)
-    // queue.textChannel.send(
-    //     {
-    //         embeds: [exampleEmbed],
-    //         components: [music_row],
-    //     }
-    // )
-// })
-
 
 client.login(process.env.TOKEN)
