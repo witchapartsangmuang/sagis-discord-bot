@@ -15,8 +15,8 @@
     "discord.js": "^14.9.0",
     "distube": "^4.0.4",
     "dotenv": "^16.0.3",
-    "ffmpeg-static": "^4.4.1",
     "nodemon": "^2.0.22",
-    "tweetnacl": "^1.0.3"
+    "tweetnacl": "^1.0.3",
+    "fluent-ffmpeg": "^2.1.2"
   }
 }
