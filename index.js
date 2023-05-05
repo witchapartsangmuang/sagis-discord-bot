@@ -121,7 +121,7 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith('Pause/Resume') || message.content.startsWith('pause') || message.content.startsWith('resume')) {
         const pause_resume_status = await pause_resume_music_command(client, message)
         message.reply(pause_resume_status).then((msg) => {
-            setTimeout(() => msg.delete(), 3000)
+            setTimeout(() => msg.delete(), 500)
         })
     }
     if (message.content.startsWith('skip') || message.content.startsWith('\u23ED')) {
@@ -149,16 +149,16 @@ client.on('interactionCreate', async (interaction) => {
         // START music bot button actions
         if (interaction.customId === 'Pause_Resume_Button') {
             interaction.reply(`Pause/Resume`).then((msg) => {
-                setTimeout(() => msg.delete(), 1)
+                setTimeout(() => msg.delete(), 500)
             })
         }
         if (interaction.customId === 'Skip_Button') {
             interaction.reply(`\u23ED | Skipped!`).then((msg) => {
-                setTimeout(() => msg.delete(), 3000)
+                setTimeout(() => msg.delete(), 500)
             })
         } if (interaction.customId === 'Stop_Button') {
             interaction.reply(`\u23F9 | Stopped!`).then((msg) => {
-                setTimeout(() => msg.delete(), 3000)
+                setTimeout(() => msg.delete(), 500)
             })
         }
         // END music bot button actions
