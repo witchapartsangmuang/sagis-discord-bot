@@ -190,3 +190,9 @@ client.distube.on('playSong', (queue, song) => {
 )
 
 client.login(process.env.TOKEN)
+
+var http = require('http');
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end('Bot is ready!');
+}).listen(process.env.POST)
