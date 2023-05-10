@@ -1,5 +1,3 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js')
-
 const play_music_command = async (client, message) => {
     try {
         if (message.content.split(' ').length == 2) {
@@ -23,9 +21,7 @@ const play_music_command = async (client, message) => {
             setTimeout(() => msg.delete(), 1000)
         })
     }
-
 }
-
 const pause_resume_music_command = async (client, message) => {
     try {
         const queue = await client.distube.getQueue(message)
@@ -40,9 +36,7 @@ const pause_resume_music_command = async (client, message) => {
     catch (e) {
         return `X | No song to play!`
     }
-
 }
-
 const skip_music_command = async (client, message) => {
     try {
         const queue = await client.distube.getQueue(message).skip()
@@ -52,7 +46,6 @@ const skip_music_command = async (client, message) => {
         })
     }
 }
-
 const stop_music_command = async (client, message) => {
     try {
         const queue = await client.distube.getQueue(message).stop()
@@ -62,9 +55,7 @@ const stop_music_command = async (client, message) => {
         })
     }
 }
-
 const queue_music_command = async (client, message, flag) => {
     const queue = await client.distube.getQueue(message)
 }
-
 module.exports = { play_music_command, pause_resume_music_command, skip_music_command, stop_music_command, queue_music_command }

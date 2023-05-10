@@ -27,7 +27,7 @@ const rollMessageCreate = async (message) => {
             setTimeout(() => msg.delete(), 10000)
         })
     } else {
-        message.reply('Please write in the correct format. (!roll min max) ex. !roll 1 10').then((msg) => {
+        message.reply('Please write in the correct format. (roll min max) ex. roll 1 10').then((msg) => {
             setTimeout(() => msg.delete(), 5000)
         })
     }

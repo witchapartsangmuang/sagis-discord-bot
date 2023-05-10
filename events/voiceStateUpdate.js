@@ -1,9 +1,6 @@
 const { Client, ChannelType, GatewayIntentBits, IntentsBitField } = require('discord.js')
-
 let voiceRoomState = []
-
 const voiceStateUpdate = async (oldState, newState) => {
-
     if (newState.channelId === '1089992710062088252') {
         const newChannel = await newState.guild.channels.create({
             name: `ห้องของ ${newState.member.user.username}`,
@@ -16,7 +13,6 @@ const voiceStateUpdate = async (oldState, newState) => {
             countUser: 0
         })
     }
-
     if (newState.channelId !== '1089992710062088252') {
         let newVoiceRoomState = []
         voiceRoomState.map((room) => {
@@ -33,9 +29,7 @@ const voiceStateUpdate = async (oldState, newState) => {
             }
         })
         voiceRoomState = newVoiceRoomState
-        // console.log(voiceRoomState, 'voiceRoomState newState')
     }
-    
     if (oldState.channelId !== '1089992710062088252') {
         let newVoiceRoomState = []
         voiceRoomState.map((room) => {
@@ -52,7 +46,6 @@ const voiceStateUpdate = async (oldState, newState) => {
             }
         })
         voiceRoomState = newVoiceRoomState
-        // console.log(voiceRoomState, 'voiceRoomState oldState')
         const checkRoomState = voiceRoomState.filter((room)=> room.roomId === oldState.channelId)[0]
         if (checkRoomState !== undefined && checkRoomState.countUser === 0) {
             oldState.guild.channels.delete(checkRoomState.roomId)
@@ -60,5 +53,4 @@ const voiceStateUpdate = async (oldState, newState) => {
         }
     }
 }
-
 module.exports = { voiceStateUpdate }

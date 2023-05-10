@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const guildMemberAdd = (member) => {
     member.guild.channels.fetch('955506682962772111').then((channel) => {
         const exampleEmbed = new EmbedBuilder()
@@ -13,6 +13,5 @@ const guildMemberAdd = (member) => {
             }
         )
     })
-
 }
 module.exports = { guildMemberAdd }
