@@ -4,9 +4,7 @@
   "description": "create bot for my channel",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js --exec babel-node --preset es2015,stage-2",
-    "build": "babel index.js --out-dir dist",
-    "serve": "node index.js",
+    "start": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,6 +12,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.9.0",
     "@discordjs/voice": "^0.16.0",
+    "@distube/ytdl-core": "^4.11.10",
     "discord.js": "^14.9.0",
     "distube": "^4.0.4",
     "dotenv": "^16.0.3",
