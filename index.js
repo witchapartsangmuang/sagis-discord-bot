@@ -38,33 +38,33 @@ client.on('ready', async (client) => {
     try {
         console.log('Started refreshing application (/) commands.')
         // START roll button
-        client.channels.fetch('1102281555650564207').then((channel) => {
-            const roll_1_10 = new ButtonBuilder().setCustomId('roll_1_10').setLabel('roll between 1 to 10').setStyle(ButtonStyle.Primary)
-            const roll_1_100 = new ButtonBuilder().setCustomId('roll_1_100').setLabel('roll between 1 to 100').setStyle(ButtonStyle.Success)
-            const roll_1_1000 = new ButtonBuilder().setCustomId('roll_1_1000').setLabel('roll between 1 to 1000').setStyle(ButtonStyle.Danger)
-            const roll_row = new ActionRowBuilder().addComponents(roll_1_10, roll_1_100, roll_1_1000)
-            channel.send({
-                content: `how much to roll ? \n if you want to custom you can use roll min max \n ex. roll 1 10`,
-                components: [roll_row],
-            })
-        })
+        // client.channels.fetch('1102281555650564207').then((channel) => {
+        //     const roll_1_10 = new ButtonBuilder().setCustomId('roll_1_10').setLabel('roll between 1 to 10').setStyle(ButtonStyle.Primary)
+        //     const roll_1_100 = new ButtonBuilder().setCustomId('roll_1_100').setLabel('roll between 1 to 100').setStyle(ButtonStyle.Success)
+        //     const roll_1_1000 = new ButtonBuilder().setCustomId('roll_1_1000').setLabel('roll between 1 to 1000').setStyle(ButtonStyle.Danger)
+        //     const roll_row = new ActionRowBuilder().addComponents(roll_1_10, roll_1_100, roll_1_1000)
+        //     channel.send({
+        //         content: `how much to roll ? \n if you want to custom you can use roll min max \n ex. roll 1 10`,
+        //         components: [roll_row],
+        //     })
+        // })
         // END roll button
         // START report button
-        client.channels.fetch('1102527207118753885').then((channel) => {
-            const Embed = new EmbedBuilder()
-                .setColor(0x09ff00)
-                .setTitle('Report แบบส่วนตัว')
-                .setDescription('กดปุ่มสีเขียวแล้วจะสร้างห้องสำหรับรีพอตโดยจะเห็นแค่ตัวคุณและเหล่า Staff โดยคุณ\nจะต้องเล่าเหตุการณ์ที่เกิดขึ้นตามความเป็นจริงและมีหลักฐานประกอบด้วยจะยิ่งดี')
-            const reportCreateChannelButton = new ButtonBuilder().setCustomId('reportCreateChannelButton').setLabel('Report !!!').setStyle(ButtonStyle.Success)
-            const report_row = new ActionRowBuilder().addComponents(reportCreateChannelButton)
-            channel.send(
-                {
-                    content: `ระบบ Report แบบ เปิด Ticket`,
-                    embeds: [Embed],
-                    components: [report_row],
-                }
-            )
-        })
+        // client.channels.fetch('1102527207118753885').then((channel) => {
+        //     const Embed = new EmbedBuilder()
+        //         .setColor(0x09ff00)
+        //         .setTitle('Report แบบส่วนตัว')
+        //         .setDescription('กดปุ่มสีเขียวแล้วจะสร้างห้องสำหรับรีพอตโดยจะเห็นแค่ตัวคุณและเหล่า Staff โดยคุณ\nจะต้องเล่าเหตุการณ์ที่เกิดขึ้นตามความเป็นจริงและมีหลักฐานประกอบด้วยจะยิ่งดี')
+        //     const reportCreateChannelButton = new ButtonBuilder().setCustomId('reportCreateChannelButton').setLabel('Report !!!').setStyle(ButtonStyle.Success)
+        //     const report_row = new ActionRowBuilder().addComponents(reportCreateChannelButton)
+        //     channel.send(
+        //         {
+        //             content: `ระบบ Report แบบ เปิด Ticket`,
+        //             embeds: [Embed],
+        //             components: [report_row],
+        //         }
+        //     )
+        // })
         // END report button
         console.log('Successfully reloaded application (/) commands.')
     } catch (error) {
